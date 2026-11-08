@@ -1,0 +1,31 @@
+# DeepLearning.AI "Agentic AI" Course Dependencies
+
+# Unified LLM Client (developed by Andrew Ng / DeepLearning.AI team)
+aisuite>=0.1.7
+
+# Model Providers
+openai>=1.50.0
+anthropic>=0.36.0
+google-genai>=0.1.1
+google-generativeai>=0.8.0
+
+# Agent Tools & External APIs (used in Research, Tool Use, & Planning)
+tavily-python>=0.5.0
+wikipedia>=1.4.0
+arxiv>=2.1.0
+requests>=2.32.0
+beautifulsoup4>=4.12.0
+
+# Web Framework & Database (used in Research Agent & Email Agent modules)
+fastapi>=0.115.0
+uvicorn[standard]>=0.30.0
+jinja2>=3.1.4
+sqlalchemy>=2.0.0
+pydantic>=2.9.0
+
+# Notebook Execution & Formatting
+ipykernel>=6.29.0
+python-dotenv>=1.0.1
+rich>=13.8.0
+matplotlib>=3.9.0
+pandas>=2.2.0
