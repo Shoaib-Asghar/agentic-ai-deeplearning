@@ -4,6 +4,7 @@ Data contracts for the Reflective Research Agent.
 Defines the structured output schemas for:
 1. Planner Agent: ToolChoice, ResearchStep, ResearchPlan
 2. Researcher Agent: StepFinding, ResearchDossier
+3. Editor Agent (Reflection): EditorialReview
 """
 
 from enum import Enum
@@ -76,4 +77,23 @@ class ResearchDossier(BaseModel):
     )
     findings: list[StepFinding] = Field(
         description="The sequential research findings gathered for each step."
+    )
+
+
+class EditorialReview(BaseModel):
+    """The structured critique and polished revision produced by the Editor Agent."""
+    critique_clarity: str = Field(
+        description="Evaluation of the report's structural flow, technical clarity, and readability."
+    )
+    critique_grounding: str = Field(
+        description="Evaluation of whether all technical claims align strictly with the research dossier."
+    )
+    critique_citations: str = Field(
+        description="Evaluation of citation quality, link correctness, and reference completeness."
+    )
+    improvements_made: list[str] = Field(
+        description="Bullet list of specific revisions applied to elevate the draft."
+    )
+    final_report: str = Field(
+        description="The complete revised, publication-ready research report in GitHub-flavored Markdown."
     )
