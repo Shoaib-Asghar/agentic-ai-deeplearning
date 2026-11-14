@@ -1,40 +1,59 @@
 # Agentic AI — DeepLearning.AI
 
-Hands-on workspace for DeepLearning.AI's **Agentic AI** course taught by Andrew Ng.
-
-We build each agent system from first principles in minimal, understandable iterations.
-
-## Active Project: Reflective Research Agent
-Located in [`01_reflective_research_agent/`](./01_reflective_research_agent/).
-
-A multi-agent pipeline that plans, researches, writes, and self-edits a report:
-1. **Planner Agent**: Decomposes a topic into targeted sub-questions and assigns appropriate research tools.
-2. **Research Agent**: Queries external tools (Tavily web search, arXiv, Wikipedia) iteratively.
-3. **Writer Agent**: Synthesizes findings into a cohesive initial draft.
-4. **Editor Agent (Reflection)**: Critiques and revises the draft into a cited Markdown report.
+My workspace for DeepLearning.AI's **Agentic AI** course taught by Andrew Ng.
 
 ---
 
-## Modern `uv` Workflow
+## Completed Projects
 
-The repository uses modern `uv` project standards (`pyproject.toml`, `uv.lock`, `.python-version`):
+### 1. Reflective Research Agent ([Documentation](./01_reflective_research_agent/README.md))
+Located in [`01_reflective_research_agent/`](./01_reflective_research_agent/).
 
-### 1. Synchronize Virtual Environment
+A 4-stage multi-agent pipeline implementing the core Agentic Design Patterns:
+* **Planner Agent (`planner.py`)**: Task decomposition into sequential sub-questions mapped to tools (**Planning Pattern**).
+* **Research Agent & Tools (`researcher.py`, `tools.py`)**: Grounded fact extraction with citations from Wikipedia, arXiv, and Tavily (**Tool Use Pattern**).
+* **Writer Agent (`writer.py`)**: Multi-section thematic synthesis of evidence into a technical Markdown draft.
+* **Editor Agent (`editor.py`)**: Rubric-driven self-critique (Clarity, Grounding, Citations) and publication polish (**Reflection Pattern**).
+
+---
+
+## Quickstart & Environment Setup
+
+### 1. Prerequisites & Installation
+This repository uses modern `uv` project management (PEP 621):
+
 ```bash
+# Clone the repository and sync virtual environment
 uv sync
 ```
-*Installs and locks dependencies deterministically in `.venv`.*
 
-### 2. Run the Research Agent
+### 2. Configure API Keys
+Copy the example environment file and add your Google Gemini API key:
 ```bash
-# Interactive mode (prompts for a topic)
+cp .env.example .env
+```
+*(Add your `GEMINI_API_KEY` from Google AI Studio. `TAVILY_API_KEY` is optional for live web search).*
+
+---
+
+## Usage
+
+### Run the Research Agent
+```bash
+# Interactive mode (prompts for a topic in terminal)
 uv run python 01_reflective_research_agent/main.py
 
 # CLI mode with custom topic and output file
-uv run python 01_reflective_research_agent/main.py --topic "How do vector databases work in RAG systems?" --output my_report.md
+uv run python 01_reflective_research_agent/main.py \
+  --topic "How do vector databases work, and how are they used in RAG systems?" \
+  --output 01_reflective_research_agent/final_report.md
 ```
 
-### 3. Run Diagnostics & Tests
+### Run Type Checking & Diagnostics
 ```bash
+# Run full repository static type check (Pyright engine)
+uv run pyright
+
+# Verify Gemini API connectivity & structured outputs
 uv run python tests/test_connection.py
 ```
