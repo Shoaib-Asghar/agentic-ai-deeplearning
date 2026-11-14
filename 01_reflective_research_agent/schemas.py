@@ -1,9 +1,9 @@
 """
 Data contracts for the Reflective Research Agent.
 
-Defines the structured output schemas for the Planner Agent using Pydantic.
-These schemas are passed directly to Gemini's `response_schema` to guarantee
-strictly typed, valid JSON responses.
+Defines the structured output schemas for:
+1. Planner Agent: ToolChoice, ResearchStep, ResearchPlan
+2. Researcher Agent: StepFinding, ResearchDossier
 """
 
 from enum import Enum
@@ -49,3 +49,31 @@ class ResearchPlan(BaseModel):
         description="A curated sequence of 3 to 5 targeted research steps."
     )
 
+
+class StepFinding(BaseModel):
+    """Synthesized evidence extracted from executing a single research step."""
+    step_number: int = Field(
+        description="The step number corresponding to the plan."
+    )
+    question: str = Field(
+        description="The research question that was investigated."
+    )
+    tool_used: str = Field(
+        description="The tool queried (wikipedia, arxiv, or tavily)."
+    )
+    summary: str = Field(
+        description="Dense, fact-based synthesis answering the question based strictly on the retrieved data."
+    )
+    citations: list[str] = Field(
+        description="List of verified source URLs, paper titles, or reference identifiers retrieved from the tool."
+    )
+
+
+class ResearchDossier(BaseModel):
+    """The complete compiled research findings gathered across all plan steps."""
+    topic: str = Field(
+        description="The overall research topic."
+    )
+    findings: list[StepFinding] = Field(
+        description="The sequential research findings gathered for each step."
+    )
