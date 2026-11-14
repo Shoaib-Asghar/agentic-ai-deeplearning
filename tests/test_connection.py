@@ -28,8 +28,9 @@ def test_basic_generation():
         model=MODEL_NAME,
         contents="In one concise sentence, explain why agentic workflows use multi-step planning.",
     )
+    output_text = response.text or ""
     print("\n[Model Output]:")
-    print(response.text.strip())
+    print(output_text.strip())
 
 
 # Define a minimal Pydantic model to test Native Structured Output
@@ -59,6 +60,9 @@ def test_structured_output():
             "response_schema": HealthCheckResult,
         },
     )
+
+    if not response.text:
+        raise ValueError("Empty response received from Gemini.")
 
     # Validate and parse directly into our Pydantic object
     result = HealthCheckResult.model_validate_json(response.text)

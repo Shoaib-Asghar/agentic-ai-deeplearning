@@ -9,17 +9,17 @@ Responsible for executing the ResearchPlan:
 """
 
 import os
+import sys
+from pathlib import Path
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types
 
-# Allow running as a standalone script or as an imported module
-try:
-    from .schemas import ResearchPlan, ResearchStep, StepFinding, ResearchDossier
-    from .tools import execute_tool
-except ImportError:
-    from schemas import ResearchPlan, ResearchStep, StepFinding, ResearchDossier
-    from tools import execute_tool
+# Ensure module directory is in sys.path for direct imports
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+from schemas import ResearchPlan, ResearchStep, StepFinding, ResearchDossier
+from tools import execute_tool
 
 load_dotenv()
 
@@ -85,6 +85,9 @@ def execute_research_step(
         contents=prompt,
         config=config,
     )
+
+    if not response.text:
+        raise ValueError(f"Researcher agent received an empty response for step {step.step_number}.")
 
     finding = StepFinding.model_validate_json(response.text)
     return finding

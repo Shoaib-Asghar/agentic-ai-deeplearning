@@ -1,6 +1,8 @@
 # Agentic AI — DeepLearning.AI
 
-My workspace for DeepLearning.AI's **Agentic AI** course by Andrew Ng.
+Hands-on workspace for DeepLearning.AI's **Agentic AI** course taught by Andrew Ng.
+
+We build each agent system from first principles in minimal, understandable iterations.
 
 ## Active Project: Reflective Research Agent
 Located in [`01_reflective_research_agent/`](./01_reflective_research_agent/).
@@ -13,8 +15,26 @@ A multi-agent pipeline that plans, researches, writes, and self-edits a report:
 
 ---
 
-## Environment & Setup
+## Modern `uv` Workflow
 
-- **Python**: 3.12 (`.venv` managed with `uv`)
-- **Primary LLM**: Google Gemini (`gemini-3.5-flash`) via the native `google-genai` SDK
-- **Configuration**: API keys stored in `.env` (see `.env.example`)
+The repository uses modern `uv` project standards (`pyproject.toml`, `uv.lock`, `.python-version`):
+
+### 1. Synchronize Virtual Environment
+```bash
+uv sync
+```
+*Installs and locks dependencies deterministically in `.venv`.*
+
+### 2. Run the Research Agent
+```bash
+# Interactive mode (prompts for a topic)
+uv run python 01_reflective_research_agent/main.py
+
+# CLI mode with custom topic and output file
+uv run python 01_reflective_research_agent/main.py --topic "How do vector databases work in RAG systems?" --output my_report.md
+```
+
+### 3. Run Diagnostics & Tests
+```bash
+uv run python tests/test_connection.py
+```

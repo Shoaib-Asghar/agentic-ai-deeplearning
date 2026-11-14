@@ -6,15 +6,16 @@ well-structured initial draft of the research report in Markdown format.
 """
 
 import os
+import sys
+from pathlib import Path
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types
 
-# Allow running as a standalone script or as an imported module
-try:
-    from .schemas import ResearchDossier, StepFinding
-except ImportError:
-    from schemas import ResearchDossier, StepFinding
+# Ensure module directory is in sys.path for direct imports
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+from schemas import ResearchDossier, StepFinding
 
 load_dotenv()
 
@@ -99,6 +100,9 @@ def write_research_report(
         contents=prompt,
         config=config,
     )
+
+    if not response.text:
+        raise ValueError("Writer agent received an empty response from Gemini.")
 
     return response.text.strip()
 

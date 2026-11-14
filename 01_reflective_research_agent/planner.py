@@ -8,15 +8,15 @@ topic into 3 to 5 sequential steps and selecting the appropriate retrieval tool
 
 import os
 import sys
+from pathlib import Path
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types
 
-# Allow running as a standalone script or as an imported module
-try:
-    from .schemas import ResearchPlan
-except ImportError:
-    from schemas import ResearchPlan
+# Ensure module directory is in sys.path for direct imports
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+from schemas import ResearchPlan
 
 load_dotenv()
 
@@ -68,6 +68,9 @@ def generate_research_plan(
         contents=prompt,
         config=config,
     )
+
+    if not response.text:
+        raise ValueError("Planner agent received an empty response from Gemini.")
 
     # Validate and parse the structured JSON directly into our Pydantic model
     plan = ResearchPlan.model_validate_json(response.text)

@@ -11,17 +11,17 @@ Implements the Actor-Critic / Evaluator-Optimizer pattern:
 """
 
 import os
+import sys
+from pathlib import Path
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types
 
-# Allow running as a standalone script or as an imported module
-try:
-    from .schemas import ResearchDossier, StepFinding, EditorialReview
-    from .writer import format_dossier_for_prompt
-except ImportError:
-    from schemas import ResearchDossier, StepFinding, EditorialReview
-    from writer import format_dossier_for_prompt
+# Ensure module directory is in sys.path for direct imports
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+from schemas import ResearchDossier, StepFinding, EditorialReview
+from writer import format_dossier_for_prompt
 
 load_dotenv()
 
@@ -96,6 +96,9 @@ def edit_and_reflect(
         contents=prompt,
         config=config,
     )
+
+    if not response.text:
+        raise ValueError("Editor agent received an empty response from Gemini.")
 
     review = EditorialReview.model_validate_json(response.text)
     return review

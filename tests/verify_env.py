@@ -6,8 +6,8 @@ import sys
 import os
 
 # Ensure safe UTF-8 output on Windows terminals
-if sys.platform == "win32":
-    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+if sys.platform == "win32" and hasattr(sys.stdout, "reconfigure"):
+    getattr(sys.stdout, "reconfigure")(encoding="utf-8", errors="replace")
 
 def check_python_version():
     major, minor = sys.version_info.major, sys.version_info.minor
